@@ -1,6 +1,6 @@
 /*global logger */
 /*
-    RGraph SemiCircular Gauge
+    RGraph Gauge Charts
     ========================
 
     @file      : RGraphGauge.js

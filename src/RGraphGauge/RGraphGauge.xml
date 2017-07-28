@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <widget id="RGraphGauge.widget.RGraphGauge" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
-    <name>RGraph Gauge Charts</name>
+    <name>RGraph Gauge</name>
     <description>Create an interactive Gauge Chart based on the lightweight RGRaph library.</description>
     <icon>
 	
@@ -113,7 +113,7 @@
         <property key="colorArray" type="object" isList="true" required="false">
             <caption>Color Gauge Sections</caption>
             <category>Ring</category>
-            <description>Set colors per sections of the gauge. Irrelevant of what minimum and maximum value are set, stick to a percentage from 0 to 100 here. Can not be used with the Color Attribute.</description>
+            <description>Set colors per sections of the gauge. Irrelevant of what minimum and maximum value are set, stick to a percentage from 0 to 100 here. If used together with color attribute, the color attribute will overrule this setting.</description>
             <properties>
                 <property key="rangeStart" type="integer" defaultValue="0">
                     <caption>Range Start</caption>
@@ -200,7 +200,7 @@
         <property key="onClickMF" type="microflow" required="false" defaultValue="">
             <caption>Microflow</caption>
             <category>Interaction</category>
-            <description>The microflow to execute on click.</description>
+            <description>The microflow to execute on click. Should have the entity containing the Data Source attributes as an inputparameter and return a boolean.</description>
             <returnType type="Boolean" />
         </property>
     </properties>

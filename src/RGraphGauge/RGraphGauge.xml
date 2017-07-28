@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<widget id="RGraphGauge.widget.RGraphGauge" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+    <name>RGraph Gauge</name>
+    <description>Create an interactive Gauge Chart based on the lightweight RGRaph library.</description>
+    <icon>
+	
+	iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAA
+	ACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAB3RJTU
+	UH4AsJDSAJNMjA7AAAA1xJREFUSMft1U2IlVUYB/Dfed9737nTjNiMjjFaI0MxOllJIiRBUIs+MJJyIbkILWiij0VFkqu
+	KFkUtWhhFJRqmprlQoiSoRR+URfmBRImQIWWNjjWkTjNz5977nhbdO84MKbQL8lkdnvOc5//8z3PO/+GC/dcsnG+z9sQi
+	p1es1PT6a0J5lNZ2Yc1WoetK8tp4XJIkisXiOfMk/+QcWj3XcN8VxvqPKz3/HEkoYa4kLBbcgCXowXTI81y5XDY6OmrVq
+	lXnZ3Kkb4HZp05SzISB38WO9svl+TIx3ibPe7VObw9rtxdD98JcXjuDo/gc7+IrlCHGqFQqjectNBbx5btU1u9SW9ApJq
+	FN+/Q+1eoDYuwWwrAQjshrB1TKgyhiDubhMfThPbyIAyEEY2NjsiybzKTSS7W3jYtaelSrL8nz24VwQghvS5OdsZgdMq3
+	1VPO6b6tjtTyoVUt1oJuwGtfjZ6zFNsRCoSBN079BRlZ0kBYoFHpUKpvk+RJJsluh8HS25di+sZWdYrFIkgiPb5C0dIh7
+	dgl3PEJzK7TX2axFikexAbIsE0bu62ZsjBDaVSqb5XGpEDbGLFsTqtXB2N4mnPwNsjrzcp18C0bidwN5ur/hsgKv1B/US
+	nwIScwy6f5fqFYflMelkuR9WbYmxHxQjA2Adjxcr7ADXbgHxbBg1sS3swNPohXP4hJIwukzatfO6ZHHPiH8Kk2fUq0Oql
+	Y1bz/eONyLUQxiEZbjmwarpqamiUCbsRXX1dlIDA+T53eKsUsIW5KfBg7ElpLStmUTDx7HbMzCQgyhv37/pgBV8Gq9oLs
+	xM4kzZrSI8VYhDEnTnfllM4VKRQjrJ4L8iDewD01oqzf6Fthzc9tUoIP4FNdgcRIqlS4xzsfhmBUPx6YmzZuOTf2tsV7ZQ
+	nxUb/rHmA/zphXOxofQYPMpmrEkkdcuRYcQjsbZnae1tEzWrzi+vBHf42ucqP+PvfDCoT/HgyZo2A+NfiY4Iwm7peGT4lt
+	f5vHi1sniFhAjfIEPkGMj1tUlxTNXtU5l0rjid3AwDD/UnUiSNBazPN17qLb5s+j+s4HivZ1GhmpCOLeMl3YMTPKVy+XGV
+	oJYEEOuFvOgqvIH/cuvnpzkzf5/PT9qtZo0TSNqF6bp/9j+AqEsK/sk22Q4AAAAJXRFWHRkYXRlOmNyZWF0ZQAyMDE2LTE
+	xLTA5VDEzOjMyOjEwKzAxOjAwrrLs8AAAACV0RVh0ZGF0ZTptb2RpZnkAMjAxNi0xMS0wOVQxMzozMjowOSswMTowMIbdE
+	QEAAAAZdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuMTJDBGvsAAAAAElFTkSuQmCC
+	
+	</icon>
+    <properties>
+		 <property key="gaugeType" type="enumeration" required="true" defaultValue="Semicircular">
+            <caption>Gauge Type</caption>
+            <category>General</category>
+            <description>You can specify the type of gauge being displayed.</description>
+			<enumerationValues>
+				<enumerationValue key="Original">Original</enumerationValue>
+				<enumerationValue key="Semicircular">Semicircular</enumerationValue>						
+			</enumerationValues>
+		</property>
+		<property key="chartTitle" type="string" required="false" defaultValue="">
+            <caption>Chart Title</caption>
+            <category>General</category>
+            <description>The title that will be displayed inside the arch.</description>
+        </property>
+		<property key="size" type="integer" required="true" defaultValue="300">
+            <caption>Size</caption>
+            <category>General</category>
+            <description>The size of the gauge.</description>
+        </property>
+		<property key="textColor" type="string" required="false" defaultValue="#816c6a">
+            <caption>Text Color</caption>
+            <category>General</category>
+            <description>The color being used in the title, ticks and display value.</description>
+        </property>
+		<property key="labelsCenterSize" type="integer" required="true" defaultValue="30">
+            <caption>Center Label Size</caption>
+            <category>General</category>
+            <description>The size for the label of the actual value in the center of the gauge.</description>
+        </property>
+        <property key="valueAttr" type="attribute" required="true" defaultValue="">
+            <caption>Value</caption>
+            <category>Data Source</category>
+            <description>The value the needle will be pointing at.</description>
+            <attributeTypes>
+                <attributeType name="Decimal" />
+            </attributeTypes>
+        </property>
+		<property key="displayValue" type="boolean" defaultValue="true">
+    			<caption>Display value</caption>
+    			<category>General</category>
+    	<description>Decide whether the value will be displayed inside the arc or not.</description>
+    	</property>
+		<property key="unitsPost" type="string" required="false" defaultValue="">
+            <caption>Units Post</caption>
+            <category>General</category>
+            <description>The units to show behind the value in the gauge. For instance % or KG.</description>
+        </property>
+        <property key="scaleDecimals" type="integer" required="true" defaultValue="1">
+            <caption>Decimals</caption>
+            <category>General</category>
+            <description>Stipulates how many decimal places there are.</description>
+        </property>
+        <property key="scalePoint" type="string" required="true" defaultValue=",">
+            <caption>Decimal Separator</caption>
+            <category>General</category>
+            <description>The character used as the decimal point.</description>
+        </property>
+        <property key="scaleThousand" type="string" required="true" defaultValue=".">
+            <caption>Thousands Separator</caption>
+            <category>General</category>
+            <description>The character used as the thousand separator</description>
+        </property>
+        <property key="minValueAttr" type="attribute" required="true">
+            <caption>Minimum Value</caption>
+            <category>Data Source</category>
+            <description>Minimum value for the arc of the gauge.</description>
+            <attributeTypes>
+                <attributeType name="Decimal" />
+            </attributeTypes>
+        </property>
+        <property key="maxValueAttr" type="attribute" required="true">
+            <caption>Maximum Value</caption>
+            <category>Data Source</category>
+            <description>Maximum value for the arc of the gauge.</description>
+            <attributeTypes>
+                <attributeType name="Decimal" />
+            </attributeTypes>
+        </property>
+        <property key="colorAttr" type="attribute" required="false">
+            <caption>Color Attribute</caption>
+            <category>Data Source</category>
+            <description>The color of the filled part of the gauge. Can not be used in combination with Color Gauge Sections.</description>
+            <attributeTypes>
+                <attributeType name="String" />
+            </attributeTypes>
+        </property>
+        <property key="colorArray" type="object" isList="true" required="false">
+            <caption>Color Gauge Sections</caption>
+            <category>Ring</category>
+            <description>Set colors per sections of the gauge. Irrelevant of what minimum and maximum value are set, stick to a percentage from 0 to 100 here. Can not be used with the Color Attribute.</description>
+            <properties>
+                <property key="rangeStart" type="integer" defaultValue="0">
+                    <caption>Range Start</caption>
+                    <category>Ring</category>
+                    <description>The starting percentage of this section of the gauge.</description>
+                </property>
+                <property key="rangeEnd" type="integer" defaultValue="100">
+                    <caption>Range End</caption>
+                    <category>Ring</category>
+                    <description>The ending percentage of this section of the gauge.</description>
+                </property>
+                <property key="colorSection" type="string" defaultValue="transparent">
+                    <caption>Color</caption>
+                    <category>Ring</category>
+                    <description>The color for the section. 
+					
+					Example colors: Red: #F02828, Orange: #FE6A00, Yellow: #E8DD11, Lightgreen: #82E042, Green: #089F50</description>
+                </property>
+            </properties>
+        </property>
+		 <property key="renderingType" type="enumeration" required="true" defaultValue="canvas">
+            <caption>Rendering Type</caption>
+            <category>Semicircular</category>
+            <description>You can specify the type of rendering for the semicircular gauge.</description>
+			<enumerationValues>
+				<enumerationValue key="canvas">canvas</enumerationValue>
+				<enumerationValue key="svg">svg</enumerationValue>						
+			</enumerationValues>
+		</property>
+		<property key="colorGradient" type="string" required="false" defaultValue="">
+            <caption>Color Gradient</caption>
+            <category>Semicircular</category>
+            <description>Whether to show a gradient in the coloring of the ring or not. Fillin a hexadecimal color to start the gradient from, i.e. #816c6a.</description>
+        </property>
+		<property key="strokeStyle" type="string" required="false" defaultValue="#FFFFFF">
+            <caption>Semicircular Style</caption>
+            <category>General</category>
+            <description>The color used for the borders of the gauge.</description>
+        </property>
+		<property key="backgroundFill" type="string" required="false" defaultValue="#816c6a">
+            <caption>Background Fill Color</caption>
+            <category>Semicircular</category>
+            <description>The color of the background fill.</description>
+        </property>
+		<property key="ringWidth" type="integer" required="true" defaultValue="30">
+            <caption>Ring Width</caption>
+            <category>Semicircular</category>
+            <description>The width of the semicircular ring. The ringwidth can not be bigger than the radius! Radius = Size / 2 - 10.</description>
+        </property>
+		 <property key="needleType" type="enumeration" required="true" defaultValue="triangle">
+            <caption>Needle Type</caption>
+            <category>Original</category>
+            <description>Controls the appearance of the needles. It can be triangle or line.</description>
+			<enumerationValues>
+				<enumerationValue key="triangle">triangle</enumerationValue>
+				<enumerationValue key="line">line</enumerationValue>					
+			</enumerationValues>
+		</property>
+		<property key="needleWidth" type="integer" defaultValue="7">
+            <caption>Needle Width</caption>
+            <category>Original</category>
+            <description>The line width that is used as the width of the line style of pointer.</description>
+        </property>
+		<property key="needleColors" type="string" required="false" defaultValue="#816c6a">
+            <caption>Needle Color</caption>
+            <category>Original</category>
+            <description>the color used in the needle.</description>
+        </property>
+		<property key="centerPinColor" type="string" required="false" defaultValue="#f9f9f9">
+            <caption>Pin Color</caption>
+            <category>Original</category>
+            <description>the color used in the centerpin gradient coloring.</description>
+        </property>
+		<property key="centerPinRadius" type="integer" required="true" defaultValue="15">
+            <caption>Pin Radius</caption>
+            <category>Original</category>
+            <description>The radius of the centerpin.</description>
+        </property>
+		<property key="easingDuration" type="integer" defaultValue="100">
+            <caption>Easing Duration</caption>
+            <category>Animation</category>
+            <description>The duration of the animation in frames.</description>
+        </property>
+        <property key="onClickMF" type="microflow" required="false" defaultValue="">
+            <caption>Microflow</caption>
+            <category>Interaction</category>
+            <description>The microflow to execute on click.</description>
+            <returnType type="Boolean" />
+        </property>
+    </properties>
+</widget>

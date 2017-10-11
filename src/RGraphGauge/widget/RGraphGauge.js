@@ -4,9 +4,9 @@
     ========================
 
     @file      : RGraphGauge.js
-    @version   : 1.0.0
+    @version   : 1.1.0
     @author    : Ivo Sturm
-    @date      : 28-07-2017
+    @date      : 11-10-2017
     @copyright : First Consulting
     @license   : Apache 2
 
@@ -17,6 +17,7 @@
 	
 	Versions
 	========================
+	v1.1.0 - Fix for bug when page is refreshed, not recreating widget since uninitialize did not go well
 	
 */
 
@@ -81,7 +82,7 @@ define([
 			this.cvs.height = this.size * (2/3) + this._titleSpace;
 			
 			// update canvas id to make multiple graphs on one Mendix page possible. id is targeted later on whilst creating the graph
-			this.cvs.id += "_" + this.domNode.id.slice(-1);
+			this.cvs.id = "cvs_" + this.domNode.id;
 						
         },
 
@@ -107,7 +108,6 @@ define([
 
         // mxui.widget._WidgetBase.uninitialize is called when the widget is destroyed. Implement to do special tear-down work.
         uninitialize: function() {
-			this._cleanUpDomNode(this.RGraphGauge,this._updateRendering(this._contextObj));
 
         },
         _drawChart: function() {
@@ -378,7 +378,6 @@ define([
 
 			}
         },
-
         // Rerender the interface.
         _updateRendering: function(obj) {
             logger.debug(this.id + "._updateRendering");
@@ -454,6 +453,7 @@ define([
 		_cleanUpDomNode: function(node,callback) {
 				
             while (node.firstChild ) {
+				console.dir(node.firstChild);
                node.removeChild(node.firstChild);
 			   			   
             }

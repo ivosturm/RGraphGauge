@@ -4,9 +4,9 @@
     ========================
 
     @file      : RGraphGauge.js
-    @version   : 1.1.0
+    @version   : 1.1.1
     @author    : Ivo Sturm
-    @date      : 11-10-2017
+    @date      : 30-04-2018
     @copyright : First Consulting
     @license   : Apache 2
 
@@ -18,6 +18,7 @@
 	Versions
 	========================
 	v1.1.0 - Fix for bug when page is refreshed, not recreating widget since uninitialize did not go well
+	v1.1.1 - Fix for bug when using a non-zero starting value for the gauge.
 	
 */
 
@@ -153,8 +154,8 @@ define([
 						color : colorArr[i].colorSection
 					};
 					this.areaArray.push(areaObj);	
-					colorRange.push(colorArr[i].rangeStart * resizeWidth  );
-					colorRange.push(colorArr[i].rangeEnd * resizeWidth );
+					colorRange.push(minValue + (colorArr[i].rangeStart * resizeWidth));
+					colorRange.push(minValue + (colorArr[i].rangeEnd * resizeWidth));
 					colorRange.push(colorArr[i].colorSection); 
 					colorRanges.push(colorRange);
 				}

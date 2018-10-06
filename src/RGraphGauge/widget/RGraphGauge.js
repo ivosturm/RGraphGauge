@@ -19,6 +19,7 @@
 	========================
 	v1.1.0 - Fix for bug when page is refreshed, not recreating widget since uninitialize did not go well
 	v1.1.1 - Fix for bug when using a non-zero starting value for the gauge.
+	v1.2.0 - Added subscriptions so Gauge Chart will update if Value is changed and a refresh in client is done.
 	
 */
 
@@ -97,10 +98,10 @@ define([
 		},
         // mxui.widget._WidgetBase.update is called when context is changed or initialized. Implement to re-render and / or fetch data.
         update: function(obj, callback) {
-			
+			this._contextObj = obj;
             //console.log(".update");
             this._resetSubscriptions();
-            this._updateRendering(obj);
+            this._updateRendering();
 
             if (typeof callback !== "undefined") {
               callback();
@@ -380,9 +381,9 @@ define([
 			}
         },
         // Rerender the interface.
-        _updateRendering: function(obj) {
+        _updateRendering: function() {
             logger.debug(this.id + "._updateRendering");
-			this._contextObj = obj;
+
             // Draw or reload.
             if (this._contextObj !== null) {
 				this._drawChart();
@@ -394,8 +395,9 @@ define([
       // Reset subscriptions.
         _resetSubscriptions: function () {
             logger.debug(this.id + "._resetSubscriptions");
-
+	
             var _objectHandle = null;
+			var _attrHandle = null;
 
             // Release handles on previous object, if any.
             if (this._handles) {
@@ -410,12 +412,21 @@ define([
                 _objectHandle = this.subscribe({
                     guid: this._contextObj.getGuid(),
                     callback: dojoLang.hitch(this, function (guid) {
-                        this._cleanUpDomNode(this.RGraphGauge,this._updateRendering(this._contextObj));
+						
+                        this._updateRendering();
                     })
                 });
 
-
-                this._handles = [_objectHandle];
+				_attrHandle = this.subscribe({
+					guid: this._contextObj.getGuid(),
+					attr: this.valueAttr,
+					callback: dojoLang.hitch(this, function(guid, attr, attrValue) {
+						
+                        this._updateRendering();
+					})
+				});
+	
+                this._handles = [_objectHandle, _attrHandle];
             }
 			
         },
@@ -454,13 +465,15 @@ define([
 		_cleanUpDomNode: function(node,callback) {
 				
             while (node.firstChild ) {
-				console.dir(node.firstChild);
+				
                node.removeChild(node.firstChild);
 			   			   
             }
 			RGraph.ObjectRegistry.clear();
 			if (typeof callback !== "undefined") {
-              callback();
+             dojoLang.hitch(this, function(){
+				 callback();
+			 })
             }
 
         }

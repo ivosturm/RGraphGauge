@@ -4,9 +4,9 @@
     ========================
 
     @file      : RGraphGauge.js
-    @version   : 1.1.1
+    @version   : 1.2.0
     @author    : Ivo Sturm
-    @date      : 30-04-2018
+    @date      : 06-10-2018
     @copyright : First Consulting
     @license   : Apache 2
 

@@ -4,9 +4,9 @@
     ========================
 
     @file      : RGraphGauge.js
-    @version   : 1.2.0
+    @version   : 2.0.0
     @author    : Ivo Sturm
-    @date      : 06-10-2018
+    @date      : 10-02-2020
     @copyright : First Consulting
     @license   : Apache 2
 
@@ -20,6 +20,9 @@
 	v1.1.0 - Fix for bug when page is refreshed, not recreating widget since uninitialize did not go well
 	v1.1.1 - Fix for bug when using a non-zero starting value for the gauge.
 	v1.2.0 - Added subscriptions so Gauge Chart will update if Value is changed and a refresh in client is done.
+	v2.0.0 - Moved to version 5.2.1 of RGraph library as there were bugs in the SVG implementation. 
+		Removed "RGraphGauge/lib/RGraph.common.zoom" file since it is absent in v5.2.1.
+		Removed setTimeout for adding eventhandlers, now properly added via adding an event listener to 'draw' event.
 	
 */
 
@@ -39,7 +42,6 @@ define([
     "RGraphGauge/lib/RGraph.common.core",
 	"RGraphGauge/lib/RGraph.common.dynamic",
 	"RGraphGauge/lib/RGraph.common.tooltips",
-	"RGraphGauge/lib/RGraph.common.zoom",
 	"RGraphGauge/lib/RGraph.semicircularprogress",
 	"RGraphGauge/lib/RGraph.gauge",
 	"RGraphGauge/lib/RGraph.svg.common.core",
@@ -319,30 +321,15 @@ define([
 						this._options.backgroundStroke = this.strokeStyle;		
 						this._options.backgroundFill = this.backgroundFill;	
 						
-						// if using SVG target the div domNode instead of the canvas element
-						this._gauge = new RGraph.SVG.SemiCircularProgress ({
-							id: this.domNode.id,
-							min: minValue,
-							max: maxValue,
-							value: value,
-							options: this._options
-						});
+						if (this._gauge){
+							// If the chart has already been created then clear the SVG
+							RGraph.SVG.clear(this._gauge.svg);
+							RGraph.SVG.OR.objects = [];
+
+						} 
+						this._drawSVGGauge(minValue,maxValue,value);
 						
-						this._gauge.grow({	frames: this.easingDuration,
-											callback: dojoLang.hitch(this,function (){
-												// for no apparent reason, if multiple SVG gauges are added, the callback is only effective for one of the gauges randomly.
-												// a timeout fixes this...
-												window.setTimeout(dojoLang.hitch(this,function(){
-													 this._gauge.path.onclick = dojoLang.hitch(this, function (e){
-														 this._execMF(this.onClickMF,this._contextObj.getGuid());
-													 });
-													 this._gauge.path.onmousemove = dojoLang.hitch(this, function (e){
-														 e.target.style.cursor = 'pointer';
-													 });
-												}),1000);
-												 
-											})
-						});
+
 					}
 				} else if (this.gaugeType == "Original"){
 					
@@ -379,7 +366,29 @@ define([
 				}	
 
 			}
-        },
+		},
+		_drawSVGGauge: function(minValue,maxValue,value){
+			// if using SVG target the div domNode instead of the canvas element
+			this._gauge = new RGraph.SVG.SemiCircularProgress ({
+				id: this.domNode.id,
+				min: minValue,
+				max: maxValue,
+				value: value,
+				options: this._options
+			});
+			this._gauge.grow({frames: this.easingDuration
+			});
+
+			this._gauge.on('draw',dojoLang.hitch(this,function(){
+				this._gauge.path.onclick = dojoLang.hitch(this, function (e){
+					this._execMF(this.onClickMF,this._contextObj.getGuid());
+				});
+				this._gauge.path.onmousemove = dojoLang.hitch(this, function (e){
+					e.target.style.cursor = 'pointer';
+				});
+			}));
+
+		},
         // Rerender the interface.
         _updateRendering: function() {
             logger.debug(this.id + "._updateRendering");
@@ -413,7 +422,8 @@ define([
                     guid: this._contextObj.getGuid(),
                     callback: dojoLang.hitch(this, function (guid) {
 						
-                        this._updateRendering();
+						this._updateRendering();
+						//console.log('object subscription triggered!');
                     })
                 });
 
@@ -422,7 +432,8 @@ define([
 					attr: this.valueAttr,
 					callback: dojoLang.hitch(this, function(guid, attr, attrValue) {
 						
-                        this._updateRendering();
+						this._updateRendering();
+						//console.log('attribute subscription triggered!');
 					})
 				});
 	
